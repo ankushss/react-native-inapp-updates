@@ -15,6 +15,36 @@ const InappUpdates = NativeModules.InappUpdates  ? NativeModules.InappUpdates  :
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return InappUpdates.multiply(a, b);
+function startUpdateFlow(appUpdateType: string,clientVersionStalenessDays?: string): Promise<string> {
+    let updateCode
+    switch(appUpdateType){
+      case 'immediate': {
+        updateCode = 1;
+        break;
+      }
+      case 'flexible': {
+        updateCode = 0;
+        break;
+      };
+      default: {
+        updateCode =1; 
+        break;
+      }
+    }
+    return InappUpdates.checkAppUpdate(updateCode, clientVersionStalenessDays);
+}
+
+function onCompleteUpdate(): Promise<string>{
+  return InappUpdates.completeUpdate();
+
+}
+
+function checkUpdateAvailability(): Promise<string>{
+  return InappUpdates.checkUpdateStatus();
+}
+
+export {
+  startUpdateFlow ,
+  onCompleteUpdate ,
+  checkUpdateAvailability
 }
