@@ -15,7 +15,7 @@ const InappUpdates = NativeModules.InappUpdates  ? NativeModules.InappUpdates  :
       }
     );
 
-function startUpdateFlow(appUpdateType: string,clientVersionStalenessDays?: string): Promise<string> {
+function startUpdateFlow(appUpdateType: string, clientVersionStalenessDays: number = 0): Promise<string> {
     let updateCode
     switch(appUpdateType){
       case 'immediate': {
@@ -27,11 +27,11 @@ function startUpdateFlow(appUpdateType: string,clientVersionStalenessDays?: stri
         break;
       };
       default: {
-        updateCode =1; 
+        updateCode = 1; 
         break;
       }
     }
-    return InappUpdates.checkAppUpdate(updateCode, clientVersionStalenessDays);
+    return InappUpdates.checkAppUpdate(updateCode,clientVersionStalenessDays);
 }
 
 function onCompleteUpdate(): Promise<string>{
